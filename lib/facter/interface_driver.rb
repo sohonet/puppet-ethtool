@@ -1,8 +1,6 @@
 require 'facter'
-require 'socket'
 require 'json'
-Socket.getifaddrs.each do |ifaddr|
-  interface = ifaddr.name
+Facter::Util::Resolution.exec("ifconfig -l").split(" ").each do |interface|
   next if interface.start_with?('veth') || interface.include?('lo') || ! File.exists?('/sbin/ethtool')
   Facter.debug("Running ethtool on interface #{interface}")
   data = {}
