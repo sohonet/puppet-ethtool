@@ -1,6 +1,6 @@
 require 'facter'
 require 'json'
-Facter::Util::Resolution.exec("ifconfig -l").split(" ").each do |interface|
+Facter::Util::Resolution.exec("ls /sys/class/net/").split(/\n/).each do |interface|
   next if interface.start_with?('veth') || interface.include?('lo') || ! File.exists?('/sbin/ethtool')
   Facter.debug("Running ethtool on interface #{interface}")
   data = {}
